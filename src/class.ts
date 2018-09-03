@@ -1,16 +1,26 @@
 /**
- * ECMAScript6ではclass構文が追加されていますが
- * TypeScriptでもclass構文の利用が可能です。
- * 構文のルールは長くなるため、コードにコメントで記載します。
- * アクセス修飾子の利用も可能です。利用可能なアクセス修飾子は次の通りです。
+ * ゲッター,セッターの使い方についてはECMASCript5で導入されていて
+ * TypeScriptでもこれを利用できます。
  * 
- *     public        クラス外からアクセス可能(コンストラクタの引数以外は省略可)
- *     protected     同じクラスか派生クラスからのみアクセス可能
- *     private       同じクラスからのみアクセス可能
+ *     private プライベート変数名;
+ *     get ゲッター名():返値型 { return this.プライベート変数名 }
+ *     set セッター名(引数名:型) { this.プライベート変数名 = 引数名 }
+ * 
+ * コンパイラの変換はデフォルトでECMAScript3に変換しますが、
+ * ゲッター、セッターはECMAScript5の機能を使うため、コンパイラにもECMAScript5への
+ * 変換であることを次のオプションで伝えます。
+ * 
+ *     --target es5
+ * 
+ * ゲッター,セッターを呼び出す際に()はいりません。
+ * プロパティにアクセスするように記述できます。
+ * 
+ *     obj.ゲッター名
+ *     obj.セッター名 = 値
  * 
  * コンパイルコマンド
  * 
- *     tsc --outDir dist src/class.ts
+ *     tsc --outDir dist src/class.ts --target es5
  * 
  * 実行コマンド
  * 
@@ -18,8 +28,9 @@
  * 
  * 期待値
  * 
- *     プロパティへのアクセスを制限したため
- *     コンパイルエラーとなる
+ *     Bob
+ *     John
+ *     Johnは男です。
  */
 // クラス名→ class クラス名
 class Person {
@@ -54,10 +65,18 @@ class Person {
     show() {
         return `${this.name}は${this.sex}です。`;
     }
+
+    get myName(): string {
+        return this.name;
+    }
+    set changeName(newName:string) {
+        this.name = newName;
+    }
 }
 
 let person = new Person('Bob', '男');
+// ゲッター,セッターによるプライベートメンバへのアクセス
+console.log(person.myName);
+person.changeName = 'John'
+console.log(person.myName);
 console.log(person.show());
-// コンパイルエラーになるため一旦コメントアウト
-// console.log(person.name);
-// console.log(person.sex);
