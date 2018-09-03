@@ -2,6 +2,11 @@
  * ECMAScript6ではclass構文が追加されていますが
  * TypeScriptでもclass構文の利用が可能です。
  * 構文のルールは長くなるため、コードにコメントで記載します。
+ * アクセス修飾子の利用も可能です。利用可能なアクセス修飾子は次の通りです。
+ * 
+ *     public        クラス外からアクセス可能
+ *     protected     同じクラスか派生クラスからのみアクセス可能
+ *     private       同じクラスからのみアクセス可能
  * 
  * コンパイルコマンド
  * 
@@ -13,15 +18,14 @@
  * 
  * 期待値
  * 
- *     Bobは男です。
- *     Bob
- *     男
+ *     プロパティへのアクセスを制限したため
+ *     コンパイルエラーとなる
  */
 // クラス名→ class クラス名
 class Person {
     // メンバの宣言→ 名前: 型;
-    name: string;
-    sex: string;
+    private name: string;
+    private sex: string;
 
     // コンストラクタ→ constructor(名前:型, ... )
     // constructorは返値の型は指定しない
@@ -32,7 +36,7 @@ class Person {
     }
 
     // 関数→ 関数名(引数名:型): 返値型 { ... }
-    show() {
+    public show() {
         return `${this.name}は${this.sex}です。`;
     }
 }
