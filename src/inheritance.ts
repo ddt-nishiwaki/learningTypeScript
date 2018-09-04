@@ -1,8 +1,17 @@
 /**
- * クラスの継承の構文はjavaでもおなじみのextendsを使います。
- * 尚、今回より変数名の重複を避けるため名前空間を使用します。
+ * 親クラスのメソッドはオーバーライドすることができます。
+ * 親クラスにはsuperでアクセス可能です。
+ * コンストラクタも同様です。
  * 
- *     class 継承先クラス名 extends 継承元クラス名 { ... }
+ *     constructor(引数名:型, ... ) {
+ *         super(引数、... );
+ *         // その他の初期化処理
+ *     }
+ * 
+ *     親クラスのメソッド名(引数:型): 返値型 {
+ *         super.親クラスのメソッド名(引数);
+ *         // その他の処理
+ *     }
  * 
  * コンパイルコマンド
  * 
@@ -14,7 +23,7 @@
  * 
  * 期待値
  * 
- *     Bobはテキパキ働きます
+ *     私の名前はBobです ポジションは主任です
  */
 namespace Learning.Inheritance {
     export class Person {
@@ -29,6 +38,19 @@ namespace Learning.Inheritance {
         }
     }
     export class BusinessPerson extends Person {
+        // コンストラクタをオーバーライドします
+        constructor(
+            protected name: string,
+            protected clazz: string
+        ) {
+            // super()は必須
+            super(name);
+            this.clazz = clazz;
+        }
+        // greetメソッドをオーバライドしています
+        greet(): string {
+            return `${super.greet()} ポジションは${this.clazz}です`;
+        }
         work(): string {
             return `${this.name}はテキパキ働きます`;
         }
@@ -37,10 +59,10 @@ namespace Learning.Inheritance {
 
 namespace Learning.Inheritance.PlayGround {
     // Personを継承したBusinessPersonインスタンスを生成する
-    export let bob:Learning.Inheritance.BusinessPerson = new Learning.Inheritance.BusinessPerson('Bob');
+    export let bob:Learning.Inheritance.BusinessPerson = new Learning.Inheritance.BusinessPerson('Bob','主任');
 }
 
-// 継承元プロパティを使った継承先のメソッドの動作確認を行う
+// オーバライドしたコンストラクタ、メソッドの確認のため実行、出力を行う
 console.log(
-    Learning.Inheritance.PlayGround.bob.work()
+    Learning.Inheritance.PlayGround.bob.greet()
 );
